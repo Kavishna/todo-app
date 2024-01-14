@@ -1,5 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Lato:wght@100;400;700&display=swap");
 
+:root {
+  --primary-blue: #a6eafe;
+  --primary-yellow: #f2e09d;
+  --primary-green: #cafba3;
+  --primary-pink: #eb9adb;
+  --background-dark: #222533;
+  --background-light: #353742;
+  --white: #ffffff;
+}
+
 * {
   margin: 0;
   padding: 0;

@@ -1,0 +1,44 @@
+@import "../../index.css";
+
+.form-signup {
+  border: 1px solid var(--primary-yellow);
+}
+
+.input {
+  position: relative;
+
+  & label {
+    position: absolute;
+    color: var(--white);
+    left: 10px;
+    font-size: 12px;
+  }
+
+  & input {
+    background-color: var(--background-light);
+    margin: 10px 0;
+    height: 40px;
+    width: 300px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    padding: 0 10px;
+    color: var(--white);
+  }
+
+  & input:focus {
+    outline: 0;
+    border: 1px solid var(--primary-yellow);
+  }
+}
+
+.submit {
+  background-color: var(--primary-yellow);
+  border-radius: 8px;
+  margin-top: 20px;
+  border: none;
+  font-size: 20px;
+  height: 40px;
+  text-transform: uppercase;
+  width: 300px;
+}
