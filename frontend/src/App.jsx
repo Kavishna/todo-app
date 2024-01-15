@@ -1,10 +1,14 @@
 import "./App.css";
-import SignUp from "./components/signup/signup";
+import Mynotes from "./components/mynotes/Mynotes";
+// import SignIn from "./components/signin/Signin";
+// import SignUp from "./components/signup/signup";
 
 function App() {
   return (
     <>
-      <SignUp />
+      {/* <SignUp /> */}
+      {/* <SignIn /> */}
+      <Mynotes />
     </>
   );
 }

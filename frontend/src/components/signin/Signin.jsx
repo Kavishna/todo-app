@@ -1,17 +1,13 @@
-import "./SignUp.css";
+import "./Signin.css";
 
-const SignUp = () => {
+const Signin = () => {
   return (
-    <div className="signup">
-      <h1 className="title">Create An Account</h1>
+    <div className="signin">
+      <h1 className="title">Welcome to My Notes</h1>
 
-      <div className="form-signup">
+      <div className="form-signin">
         <h2>Sign Up</h2>
         <form>
-          <div className="name input">
-            <label htmlFor="name">Name</label>
-            <input type="text" name="name" autoComplete="off" />
-          </div>
           <div className="email input">
             <label htmlFor="email">Email</label>
             <input type="email" name="email" />
@@ -21,14 +17,14 @@ const SignUp = () => {
             <input type="password" name="password" />
           </div>
           <button className="submit" type="submit">
-            Sign Up
+            Sign In
           </button>
         </form>
-        <p>Already have an account?</p>
-        <a href="#">Sign in</a>
+        <p>Don’t have an account?</p>
+        <a href="#">Sign Up</a>
       </div>
     </div>
   );
 };
 
-export default SignUp;
+export default Signin;

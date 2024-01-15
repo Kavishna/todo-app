@@ -1,0 +1,5 @@
+@import "./assets/colors.css";
+
+body {
+  background-color: var(--background-dark);
+}

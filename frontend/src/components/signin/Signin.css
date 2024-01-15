@@ -1,6 +1,6 @@
 @import "../../assets/colors.css";
 
-.signup {
+.signin {
   background-color: var(--background-dark);
   height: 100vh;
   display: flex;
@@ -28,7 +28,7 @@
   top: 40px;
 }
 
-.form-signup {
+.form-signin {
   border: 1px solid var(--primary-yellow);
   border-radius: 8px;
   width: 360px;
