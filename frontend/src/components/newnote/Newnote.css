@@ -1,0 +1,103 @@
+@import "../../assets//colors.css";
+
+.add {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100svh;
+}
+
+.container {
+  border: 1px solid var(--primary-yellow);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  max-width: 650px;
+  width: 100%;
+  margin: 20px;
+  position: relative;
+  margin-top: 50px;
+
+  & h2 {
+    position: absolute;
+    color: var(--white);
+    top: -40px;
+  }
+
+  & .title {
+    margin: 20px;
+    font-size: 18px;
+    padding: 8px;
+  }
+
+  & .description {
+    margin: 0 20px 20px 20px;
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  margin: 0 20px 20px 20px;
+
+  & img {
+    width: 80%;
+  }
+
+  & .opts {
+    margin-left: auto;
+    display: flex;
+  }
+
+  & button {
+    height: 30px;
+    width: 30px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  & .delete {
+    text-align: center;
+  }
+
+  & .add {
+    margin-left: 10px;
+    text-align: center;
+  }
+}
+
+input,
+textarea {
+  outline: 0;
+  border: none;
+  background-color: var(--background-light);
+  color: var(--white);
+  border-radius: 8px;
+}
+
+input:focus,
+textarea:focus {
+  border: 1px solid var(--primary-yellow);
+}
+
+.colors {
+  & .color {
+    height: 18px;
+    width: 18px;
+    border-radius: 100%;
+    outline: 0;
+    border: none;
+    margin: 0 3px;
+    box-sizing: content-box;
+  }
+
+  & .selected {
+    background-color: var(--primary-yellow);
+    border: 3px solid var(--primary-yellow);
+  }
+}
