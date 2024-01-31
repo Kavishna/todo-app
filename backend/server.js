@@ -5,6 +5,7 @@ const app = express();
 
 // Load different route files
 const notesRoutes = require("./routes/notes");
+const { default: mongoose } = require("mongoose");
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 
@@ -19,6 +20,13 @@ app.use((req, res, next) => {
 // Use the routes
 app.use("/api/notes", notesRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+//db connection
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("DB connection established");
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => console.log(err));

@@ -1,5 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const {
+  createNote,
+  getAllNotes,
+  getSingleNote,
+  updateNote,
+  deleteNote,
+} = require("../controllers/noteController");
 
 let notes = [
   { id: 1, title: "Note 1", content: "Content 1" },
@@ -7,55 +14,18 @@ let notes = [
 ];
 
 // GET all notes
-router.get("/", (req, res) => {
-  res.json(notes);
-});
+router.get("/", getAllNotes);
 
 // GET a specific note
-router.get("/:id", (req, res) => {
-  const id = parseInt(req.params.id);
-  const note = notes.find((n) => n.id === id);
-
-  if (!note) {
-    return res.status(404).json({ message: "Note not found" });
-  }
-
-  res.json(note);
-});
+router.get("/:id", getSingleNote);
 
 // POST a new note
-router.post("/", (req, res) => {
-  const { title, content } = req.body;
-  const newNote = { id: notes.length + 1, title, content };
-  notes.push(newNote);
-  res.status(201).json(newNote);
-});
+router.post("/", createNote);
 
 // PUT (update) a note
-router.put("/:id", (req, res) => {
-  const id = parseInt(req.params.id);
-  const { title, content } = req.body;
-  const index = notes.findIndex((n) => n.id === id);
-
-  if (index === -1) {
-    return res.status(404).json({ message: "Note not found" });
-  }
-
-  notes[index] = { id, title, content };
-  res.json(notes[index]);
-});
+router.patch("/:id", updateNote);
 
 // DELETE a note
-router.delete("/:id", (req, res) => {
-  const id = parseInt(req.params.id);
-  const index = notes.findIndex((n) => n.id === id);
-
-  if (index === -1) {
-    return res.status(404).json({ message: "Note not found" });
-  }
-
-  const deletedNote = notes.splice(index, 1);
-  res.json({ message: "Note deleted", deletedNote: deletedNote[0] });
-});
+router.delete("/:id", deleteNote);
 
 module.exports = router;
