@@ -1,6 +1,6 @@
 import "./App.css";
-import Newnote from "./components/newnote/Newnote";
-// import Mynotes from "./components/mynotes/Mynotes";
+// import Newnote from "./components/newnote/Newnote";
+import Mynotes from "./components/mynotes/Mynotes";
 // import SignIn from "./components/signin/Signin";
 // import SignUp from "./components/signup/signup";
 
@@ -9,8 +9,8 @@ function App() {
     <>
       {/* <SignUp /> */}
       {/* <SignIn /> */}
-      {/* <Mynotes /> */}
-      <Newnote />
+      <Mynotes />
+      {/* <Newnote /> */}
     </>
   );
 }
