@@ -46,6 +46,7 @@ const Newnote = () => {
 
   return (
     <div className="add">
+      <div>X</div>
       <div className="center">
         <div
           className="container"
@@ -105,10 +106,10 @@ const Newnote = () => {
               ></button>
             </div>
             <div className="opts">
-              <button className="delete">
+              <button className="delete-ico">
                 <img src={deleteIcon} alt="delete this note" />
               </button>
-              <button className="add">
+              <button className="add-ico">
                 <img src={addIcon} alt="add a note" />
               </button>
             </div>

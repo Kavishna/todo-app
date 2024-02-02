@@ -4,6 +4,8 @@
   text-align: center;
   width: 100%;
   height: 100%;
+  position: fixed;
+  background-color: var(--background-dark);
 }
 
 .center {
@@ -69,8 +71,8 @@
     cursor: pointer;
   }
 
-  & .add,
-  .delete {
+  & .add-ico,
+  .delete-ico {
     margin-left: 10px;
     display: flex;
     justify-content: center;
