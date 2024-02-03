@@ -2,16 +2,19 @@ import { useState } from "react";
 import "./Newnote.css";
 import deleteIcon from "../../assets/delete.svg";
 import addIcon from "../../assets/add.svg";
+import closeIcon from "../../assets/close.svg";
 
 const Newnote = () => {
   const [note, setNote] = useState({
     title: "",
-    content: "",
+    description: "",
     color: "#eb9adb",
   });
 
   const [isTitleFocused, setIsTitleFocused] = useState(false);
   const [isContentFocused, setIsContentFocused] = useState(false);
+
+  const [error, setError] = useState(null);
 
   const handleTitleFocus = () => {
     setIsTitleFocused(true);
@@ -37,22 +40,61 @@ const Newnote = () => {
     border: `1px solid ${isContentFocused ? note.color : "transparent"}`,
   };
 
-  const handleColorChange = (color) => {
+  const handleColorChange = (e, color) => {
+    e.preventDefault();
     setNote({
       ...note,
       color,
     });
   };
 
+  const setDescription = (e) => {
+    e.preventDefault();
+    setNote({ ...note, description: e.target.value });
+  };
+  const setTitle = (e) => {
+    e.preventDefault();
+    setNote({ ...note, title: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(note);
+
+    const response = await fetch("api/notes", {
+      method: "POST",
+      body: JSON.stringify(note),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const json = response.json();
+
+    if (!response.ok) {
+      setError(json.error);
+      console.log(json.error);
+    }
+    if (response.ok) {
+      setError(null);
+      setNote({
+        title: "",
+        content: "",
+        color: "#eb9adb",
+      });
+    }
+  };
+
   return (
     <div className="add">
-      <div>X</div>
+      <div className="x">
+        <img src={closeIcon} alt="close window" />
+      </div>
       <div className="center">
-        <div
+        <h2>Add New Note</h2>
+        <form
           className="container"
           style={{ border: `1px solid ${note.color}` }}
+          onSubmit={handleSubmit}
         >
-          <h2>Add New Note</h2>
           <input
             type="text"
             className="title"
@@ -60,6 +102,7 @@ const Newnote = () => {
             onFocus={handleTitleFocus}
             onBlur={handleTitleBlur}
             style={titleInputStyle}
+            onChange={(e) => setTitle(e)}
           />
           <textarea
             cols="30"
@@ -69,6 +112,7 @@ const Newnote = () => {
             onFocus={handleContentFocus}
             onBlur={handleContentBlur}
             style={contentInputStyle}
+            onChange={(e) => setDescription(e)}
           ></textarea>
           <div className="actions">
             <div className="colors">
@@ -78,7 +122,7 @@ const Newnote = () => {
                     ? "pink color selected"
                     : "pink color"
                 }
-                onClick={() => handleColorChange("#eb9adb")}
+                onClick={(e) => handleColorChange(e, "#eb9adb")}
               ></button>
               <button
                 className={
@@ -86,7 +130,7 @@ const Newnote = () => {
                     ? "yellow color selected"
                     : "yellow color"
                 }
-                onClick={() => handleColorChange("#f2e09d")}
+                onClick={(e) => handleColorChange(e, "#f2e09d")}
               ></button>
               <button
                 className={
@@ -94,7 +138,7 @@ const Newnote = () => {
                     ? "green color selected"
                     : "green color"
                 }
-                onClick={() => handleColorChange("#cafba3")}
+                onClick={(e) => handleColorChange(e, "#cafba3")}
               ></button>
               <button
                 className={
@@ -102,19 +146,19 @@ const Newnote = () => {
                     ? "blue color selected"
                     : "blue color"
                 }
-                onClick={() => handleColorChange("#a6eafe")}
+                onClick={(e) => handleColorChange(e, "#a6eafe")}
               ></button>
             </div>
             <div className="opts">
               <button className="delete-ico">
                 <img src={deleteIcon} alt="delete this note" />
               </button>
-              <button className="add-ico">
+              <button type="submit" className="add-ico">
                 <img src={addIcon} alt="add a note" />
               </button>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
