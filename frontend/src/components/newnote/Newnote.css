@@ -28,6 +28,24 @@
   display: none;
 }
 
+/* HTML: <div class="loader"></div> */
+.loader {
+  background: linear-gradient(
+      90deg,
+      #6f6f6f11 33%,
+      rgba(196, 196, 196, 0.333) 50%,
+      #6f6f6f11 66%
+    )
+    var(--background-dark);
+  background-size: 300% 100%;
+  animation: l1 1s infinite linear;
+}
+@keyframes l1 {
+  0% {
+    background-position: right;
+  }
+}
+
 .center {
   margin: 20px;
   display: flex;
@@ -143,4 +161,15 @@ textarea {
   & .blue {
     background-color: var(--primary-blue);
   }
+}
+
+button:disabled,
+input:disabled,
+textarea:disabled {
+  cursor: auto;
+  background-color: rgb(72, 72, 82);
+}
+
+.note {
+  cursor: pointer;
 }

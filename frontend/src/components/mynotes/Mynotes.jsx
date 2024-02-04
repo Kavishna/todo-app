@@ -5,7 +5,9 @@ import Newnote from "../newnote/Newnote";
 
 const Mynotes = () => {
   const [notes, setNotes] = useState(null);
-  const [addNote, setNoteOpen] = useState(false);
+  const [toggleNoteModel, setToggleNoteModel] = useState(false);
+  const [updateNote, setUpdateNoteModel] = useState(false);
+  const [updateData, setUpdateData] = useState(null);
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -23,16 +25,34 @@ const Mynotes = () => {
   }, []);
 
   const openNote = () => {
-    setNoteOpen(true);
+    setToggleNoteModel(true);
   };
 
   const closeNote = () => {
-    setNoteOpen(false);
+    setToggleNoteModel(false);
+    setUpdateNoteModel(false);
+    setUpdateData(null);
+  };
+
+  const handleUpdateNote = (data) => {
+    setUpdateNoteModel(true);
+    setUpdateData({
+      id: data._id,
+      title: data.title,
+      description: data.description,
+      color: data.color,
+    });
   };
 
   return (
     <>
-      {addNote && <Newnote closeNote />}
+      {(toggleNoteModel || updateNote) && (
+        <Newnote
+          closeNote={closeNote}
+          noteState={updateNote ? "Update Note" : "Add a New Note"}
+          updateData={updateData}
+        />
+      )}
       <div className="outer-container">
         <div className="notes-container">
           <h2>
@@ -42,6 +62,7 @@ const Mynotes = () => {
             notes.map((note) => {
               return (
                 <div
+                  onClick={() => handleUpdateNote(note)}
                   style={{ backgroundColor: note.color }}
                   className="note"
                   key={note._id}

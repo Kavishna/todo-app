@@ -1,20 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Newnote.css";
 import deleteIcon from "../../assets/delete.svg";
 import addIcon from "../../assets/add.svg";
 import closeIcon from "../../assets/close.svg";
 
-const Newnote = () => {
+const Newnote = ({ noteState, closeNote, updateData }) => {
   const [note, setNote] = useState({
     title: "",
     description: "",
     color: "#eb9adb",
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   const [isTitleFocused, setIsTitleFocused] = useState(false);
   const [isContentFocused, setIsContentFocused] = useState(false);
 
   const [error, setError] = useState(null);
+
+  if (updateData) {
+    setNote({
+      ...note,
+      title: updateData.title,
+      description: updateData.description,
+      color: updateData.color,
+    });
+    console.log(updateData.title);
+  }
 
   const handleTitleFocus = () => {
     setIsTitleFocused(true);
@@ -52,6 +63,7 @@ const Newnote = () => {
     e.preventDefault();
     setNote({ ...note, description: e.target.value });
   };
+
   const setTitle = (e) => {
     e.preventDefault();
     setNote({ ...note, title: e.target.value });
@@ -59,50 +71,56 @@ const Newnote = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(note);
+    setIsLoading(true);
 
-    const response = await fetch("api/notes", {
-      method: "POST",
-      body: JSON.stringify(note),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    const json = response.json();
-
-    if (!response.ok) {
-      setError(json.error);
-      console.log(json.error);
-    }
-    if (response.ok) {
-      setError(null);
-      setNote({
-        title: "",
-        content: "",
-        color: "#eb9adb",
+    try {
+      const response = await fetch("api/notes", {
+        method: "POST",
+        body: JSON.stringify(note),
+        headers: { "Content-Type": "application/json" },
       });
+
+      if (!response.ok) {
+        const json = await response.json();
+        setError(json.error);
+        console.log(json.error);
+      } else {
+        setError(null);
+        setNote({
+          ...note,
+          title: "",
+          description: "",
+        });
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="add">
-      <div className="x">
+      <div className="x" onClick={(e) => closeNote()}>
         <img src={closeIcon} alt="close window" />
       </div>
       <div className="center">
-        <h2>Add New Note</h2>
+        <h2>{noteState}</h2>
         <form
-          className="container"
+          className={isLoading ? "container loader" : "container"}
           style={{ border: `1px solid ${note.color}` }}
           onSubmit={handleSubmit}
         >
           <input
             type="text"
-            className="title"
+            className="title "
             placeholder="Title"
             onFocus={handleTitleFocus}
             onBlur={handleTitleBlur}
             style={titleInputStyle}
+            disabled={isLoading}
             onChange={(e) => setTitle(e)}
+            value={note.title}
           />
           <textarea
             cols="30"
@@ -112,11 +130,14 @@ const Newnote = () => {
             onFocus={handleContentFocus}
             onBlur={handleContentBlur}
             style={contentInputStyle}
+            disabled={isLoading}
             onChange={(e) => setDescription(e)}
+            value={note.description}
           ></textarea>
           <div className="actions">
             <div className="colors">
               <button
+                disabled={isLoading}
                 className={
                   note.color === "#eb9adb"
                     ? "pink color selected"
@@ -125,6 +146,7 @@ const Newnote = () => {
                 onClick={(e) => handleColorChange(e, "#eb9adb")}
               ></button>
               <button
+                disabled={isLoading}
                 className={
                   note.color === "#f2e09d"
                     ? "yellow color selected"
@@ -133,6 +155,7 @@ const Newnote = () => {
                 onClick={(e) => handleColorChange(e, "#f2e09d")}
               ></button>
               <button
+                disabled={isLoading}
                 className={
                   note.color === "#cafba3"
                     ? "green color selected"
@@ -141,6 +164,7 @@ const Newnote = () => {
                 onClick={(e) => handleColorChange(e, "#cafba3")}
               ></button>
               <button
+                disabled={isLoading}
                 className={
                   note.color === "#a6eafe"
                     ? "blue color selected"
@@ -150,10 +174,10 @@ const Newnote = () => {
               ></button>
             </div>
             <div className="opts">
-              <button className="delete-ico">
+              <button className="delete-ico" disabled={isLoading}>
                 <img src={deleteIcon} alt="delete this note" />
               </button>
-              <button type="submit" className="add-ico">
+              <button type="submit" className="add-ico" disabled={isLoading}>
                 <img src={addIcon} alt="add a note" />
               </button>
             </div>
