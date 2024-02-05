@@ -5,27 +5,29 @@ import addIcon from "../../assets/add.svg";
 import closeIcon from "../../assets/close.svg";
 
 const Newnote = ({ noteState, closeNote, updateData }) => {
+  useEffect(() => {
+    if (updateData) {
+      setNote({
+        ...note,
+        title: updateData.title,
+        description: updateData.description,
+        color: updateData.color,
+      });
+    }
+    setError(false);
+  }, []);
+
   const [note, setNote] = useState({
     title: "",
     description: "",
     color: "#eb9adb",
   });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isTitleFocused, setIsTitleFocused] = useState(false);
   const [isContentFocused, setIsContentFocused] = useState(false);
 
   const [error, setError] = useState(null);
-
-  if (updateData) {
-    setNote({
-      ...note,
-      title: updateData.title,
-      description: updateData.description,
-      color: updateData.color,
-    });
-    console.log(updateData.title);
-  }
 
   const handleTitleFocus = () => {
     setIsTitleFocused(true);
@@ -94,8 +96,66 @@ const Newnote = ({ noteState, closeNote, updateData }) => {
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      setError(error);
     } finally {
       setIsLoading(false);
+      if (!error) closeNote();
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`api/notes/${updateData.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+      } else {
+        console.error(
+          "Error deleting resource:",
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error deleting resource:", error);
+      setError(error);
+    } finally {
+      setIsLoading(false);
+      if (!error) closeNote();
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const response = await fetch(`api/notes/${updateData.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(note),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+      } else {
+        console.error(
+          "Error updating resource:",
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error updating resource:", error);
+      setError(error);
+    } finally {
+      setIsLoading(false);
+      if (!error) closeNote();
     }
   };
 
@@ -109,7 +169,7 @@ const Newnote = ({ noteState, closeNote, updateData }) => {
         <form
           className={isLoading ? "container loader" : "container"}
           style={{ border: `1px solid ${note.color}` }}
-          onSubmit={handleSubmit}
+          onSubmit={updateData ? handleUpdate : handleSubmit}
         >
           <input
             type="text"
@@ -174,7 +234,11 @@ const Newnote = ({ noteState, closeNote, updateData }) => {
               ></button>
             </div>
             <div className="opts">
-              <button className="delete-ico" disabled={isLoading}>
+              <button
+                className="delete-ico"
+                onClick={handleDelete}
+                disabled={isLoading}
+              >
                 <img src={deleteIcon} alt="delete this note" />
               </button>
               <button type="submit" className="add-ico" disabled={isLoading}>
@@ -184,6 +248,7 @@ const Newnote = ({ noteState, closeNote, updateData }) => {
           </div>
         </form>
       </div>
+      {error && <div className="error">{error}</div>}
     </div>
   );
 };

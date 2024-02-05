@@ -7,7 +7,6 @@
   position: fixed;
   background-color: var(--background-dark);
   overflow-x: hidden;
-  /* position: relative; */
 
   & .x {
     position: absolute;
@@ -172,4 +171,20 @@ textarea:disabled {
 
 .note {
   cursor: pointer;
+}
+
+.error {
+  margin: o auto;
+  width: 650px;
+  min-width: 350px;
+  max-width: 650px;
+  color: var(--white);
+  background-color: #fc4a4a;
+  padding: 5px;
+  border-radius: 8px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
