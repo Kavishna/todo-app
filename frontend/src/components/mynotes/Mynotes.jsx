@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import addIcon from "../../assets/add-note.svg";
 import "./Mynotes.css";
 import Newnote from "../newnote/Newnote";
+import { useNotes } from "../../hooks/useNotes";
 
 const Mynotes = () => {
-  const [notes, setNotes] = useState(null);
+  // const [notes, setNotes] = useState(null);
   const [toggleNoteModel, setToggleNoteModel] = useState(false);
   const [updateNote, setUpdateNoteModel] = useState(false);
   const [updateData, setUpdateData] = useState(null);
+
+  const { notes, dispatch } = useNotes();
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -17,7 +20,7 @@ const Mynotes = () => {
       console.log(json);
 
       if (response.ok) {
-        setNotes(json);
+        dispatch({ type: "SET_NOTES", json });
       }
     };
 

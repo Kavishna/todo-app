@@ -131,7 +131,8 @@ const Newnote = ({ noteState, closeNote, updateData }) => {
     }
   };
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (e) => {
+    e.preventDefault();
     try {
       const response = await fetch(`api/notes/${updateData.id}`, {
         method: "PATCH",
