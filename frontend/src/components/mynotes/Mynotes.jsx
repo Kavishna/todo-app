@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import addIcon from "../../assets/add-note.svg";
 import "./Mynotes.css";
 import Newnote from "../newnote/Newnote";
-import { useNotes } from "../../hooks/useNotes";
+import { useNotesContext } from "../../hooks/useNotesContext";
 
 const Mynotes = () => {
   // const [notes, setNotes] = useState(null);
@@ -10,18 +10,17 @@ const Mynotes = () => {
   const [updateNote, setUpdateNoteModel] = useState(false);
   const [updateData, setUpdateData] = useState(null);
 
-  const { notes, dispatch } = useNotes();
+  const { notes, dispatch } = useNotesContext();
 
   useEffect(() => {
     const fetchNotes = async () => {
       const response = await fetch("/api/notes");
-      console.log(response);
       const json = await response.json();
-      console.log(json);
 
       if (response.ok) {
-        dispatch({ type: "SET_NOTES", json });
+        dispatch({ type: "SET_NOTES", payload: json });
       }
+      console.log(notes);
     };
 
     fetchNotes();

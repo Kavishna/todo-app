@@ -1,10 +1,14 @@
-import { createContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer } from "react";
 
-const initialState = { notes: null }; // Initial state object
-// Create the context using `createContext`
-export const NotesContext = createContext(initialState);
+// Define initial state for notes
+const initialState = {
+  notes: [],
+};
 
-export const notesReducer = (state, action) => {
+// Define actions to manipulate notes state
+const notesReducer = (state, action) => {
+  // console.log("actions to manipulate notes");
+  // console.log(action);
   switch (action.type) {
     case "SET_NOTES":
       return {
@@ -12,45 +16,31 @@ export const notesReducer = (state, action) => {
       };
     case "ADD_NOTE":
       return {
-        ...state,
         notes: [...state.notes, action.payload],
       };
-    case "DELETE_NOTE":
-      const updatedNotes = state.notes.filter(
-        (note, index) => index !== action.payload
-      );
-      return {
-        ...state,
-        notes: updatedNotes,
-      };
     case "UPDATE_NOTE":
-      const { noteIndex, updatedNote } = action.payload;
-      const updatedNotesAfterUpdate = state.notes.map((note, index) =>
-        index === noteIndex ? updatedNote : note
-      );
       return {
         ...state,
-        notes: updatedNotesAfterUpdate,
+        notes: state.notes.map((note) =>
+          note.id === action.payload.id ? action.payload : note
+        ),
+      };
+    case "DELETE_NOTE":
+      return {
+        ...state,
+        notes: state.notes.filter((note) => note.id !== action.payload),
       };
     default:
       return state;
   }
 };
 
+// Create NotesContext
+export const NotesContext = createContext();
+
+// NotesContextProvider component
 export const NotesContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(notesReducer, initialState);
-
-  const addNote = (newNote) => {
-    dispatch({ type: "ADD_NOTE", payload: newNote });
-  };
-  const updateNote = (id, updatedNote) => {
-    dispatch({ type: "UPDATE_NOTE", payload: { id, updatedNote } });
-  };
-  const deleteNote = (id) => {
-    dispatch({ type: "DELETE_NOTE", payload: id });
-  };
-
-  const value = { ...state, addNote, updateNote, deleteNote };
 
   return (
     <NotesContext.Provider value={{ ...state, dispatch }}>
